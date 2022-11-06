@@ -22,7 +22,7 @@ public class Tank {
     private boolean moving = false;
 
 
-    public Tank(int x, int y, Direction direction,Group group, TankFrame tankFrame) {
+    public Tank(int x, int y, Direction direction, Group group, TankFrame tankFrame) {
         this.x = x;
         this.y = y;
         this.group = group;
@@ -39,13 +39,26 @@ public class Tank {
     }
 
     public void paint(Graphics graphics) {
-        if (!alive){
+        if (!alive) {
             tankFrame.enemies.remove(this);
         }
         Color color = graphics.getColor();
         graphics.setColor(Color.yellow);
-        graphics.fillRect(x, y, WIDTH, HEIGHT);
         graphics.setColor(color);
+        switch (direction) {
+            case LEFT:
+                graphics.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankLeft : ResourceMgr.badTankLeft, x, y, null);
+                break;
+            case RIGHT:
+                graphics.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankRight : ResourceMgr.badTankRight, x, y, null);
+                break;
+            case UP:
+                graphics.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankUp : ResourceMgr.badTankUp, x, y, null);
+                break;
+            case DOWN:
+                graphics.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankDown : ResourceMgr.badTankDown, x, y, null);
+                break;
+        }
         move();
     }
 

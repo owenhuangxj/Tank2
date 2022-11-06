@@ -23,6 +23,12 @@ public class TankFrame extends Frame {
 
     List<Bullet> bullets = new ArrayList<>();
 
+
+
+    static {
+        TankFrame.class.getClassLoader().getResourceAsStream("images/badTank1.png");
+    }
+
     public TankFrame() {
         this.setSize(GAME_WIDTH, GAME_HEIGHT);
         this.setResizable(false);

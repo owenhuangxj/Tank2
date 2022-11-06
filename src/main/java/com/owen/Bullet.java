@@ -17,6 +17,8 @@ public class Bullet {
     private TankFrame tankFrame;
 
     boolean alive = true;
+    static Rectangle tankRectangle = new Rectangle();
+    static Rectangle bulletRectangle = new Rectangle();
 
     public Bullet(int x, int y, Direction direction, TankFrame tankFrame) {
         this.x = x;
@@ -29,10 +31,16 @@ public class Bullet {
         this.alive = false;
     }
 
-    public void collideWithTank(Tank tank){
-        Rectangle tankRectangle = new Rectangle(tank.x,tank.y,Tank.WIDTH, Tank.HEIGHT);
-        Rectangle bulletRectangle = new Rectangle(this.x,this.y,WIDTH, HEIGHT);
-        if (tankRectangle.intersects(bulletRectangle)){
+    public void collideWithTank(Tank tank) {
+        tankRectangle.x = tank.x;
+        tankRectangle.y = tank.y;
+        tankRectangle.width = Tank.WIDTH;
+        tankRectangle.height = Tank.HEIGHT;
+        bulletRectangle.x = this.x;
+        bulletRectangle.y = this.y;
+        bulletRectangle.width = WIDTH;
+        bulletRectangle.height = HEIGHT;
+        if (tankRectangle.intersects(bulletRectangle)) {
             this.die();
             tank.die();
         }
@@ -80,7 +88,7 @@ public class Bullet {
         move();
         List<Tank> tanks = tankFrame.enemies;
         for (int idx = 0; idx < tanks.size(); idx++) {
-            if (tanks.get(idx).group == Group.BAD){
+            if (tanks.get(idx).group == Group.BAD) {
                 collideWithTank(tanks.get(idx));
             }
         }
