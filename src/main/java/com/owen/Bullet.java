@@ -83,8 +83,21 @@ public class Bullet {
         }
         Color color = graphics.getColor();
         graphics.setColor(Color.RED);
-        graphics.fillOval(x, y, WIDTH, HEIGHT);
         graphics.setColor(color);
+        switch (direction) {
+            case LEFT:
+                graphics.drawImage(ResourceMgr.bulletLeft, x, y, null);
+                break;
+            case RIGHT:
+                graphics.drawImage(ResourceMgr.bulletRight, x, y, null);
+                break;
+            case UP:
+                graphics.drawImage(ResourceMgr.bulletUp, x, y, null);
+                break;
+            case DOWN:
+                graphics.drawImage(ResourceMgr.bulletDown, x, y, null);
+                break;
+        }
         move();
         List<Tank> tanks = tankFrame.enemies;
         for (int idx = 0; idx < tanks.size(); idx++) {

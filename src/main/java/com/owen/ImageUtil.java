@@ -3,6 +3,10 @@ package com.owen;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * @author OwenHuang
+ * @since 2022-11-06 16:00
+ */
 public class ImageUtil {
     public static BufferedImage rotateImage(final BufferedImage bufferedImage, final int degree) {
         int width = bufferedImage.getWidth();

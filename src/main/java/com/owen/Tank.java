@@ -84,8 +84,8 @@ public class Tank {
     }
 
     public void fire() {
-        int bw = this.x + WIDTH / 2 - Bullet.WIDTH / 2;
-        int bh = this.y + HEIGHT / 2 - Bullet.HEIGHT / 2;
+        int bw = this.x + WIDTH / 2 - Bullet.WIDTH;
+        int bh = this.y + HEIGHT / 2 - Bullet.HEIGHT;
         this.tankFrame.bullets.add(new Bullet(bw, bh, this.direction, tankFrame));
     }
 
