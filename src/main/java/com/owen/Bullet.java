@@ -30,6 +30,11 @@ public class Bullet {
         this.playerId = playerId;
         this.direction = direction;
         this.tankFrame = tankFrame;
+
+        rectangle.x = this.x;
+        rectangle.y = this.y;
+        rectangle.width = Bullet.WIDTH;
+        rectangle.height = Bullet.HEIGHT;
     }
 
     public void die() {
@@ -38,22 +43,15 @@ public class Bullet {
 
     public void collideWithTank(Tank tank) {
         // 如果玩家并且是玩家发射的子弹不用进行碰撞处理
-        if (tank.id == this.playerId) {
-            return;
-        }
+//        if (tank.id == this.playerId) {
+//            return;
+//        }
         // 如果是同一战线发射的子弹不伤害战友
         if (this.group == tank.group) {
             return;
         }
-        rectangle.x = tank.x;
-        rectangle.y = tank.y;
-        rectangle.width = Tank.WIDTH;
-        rectangle.height = Tank.HEIGHT;
-        tank.rectangle.x = this.x;
-        tank.rectangle.y = this.y;
-        tank.rectangle.width = WIDTH;
-        tank.rectangle.height = HEIGHT;
-        if (rectangle.intersects(tank.rectangle)) {
+
+        if (tank.alive == true && this.alive == true && rectangle.intersects(tank.rectangle)) {
             this.die();
             tank.die();
         }
@@ -80,6 +78,10 @@ public class Bullet {
             alive = false;
             return;
         }
+        // 更新碰撞盒的x和y
+        rectangle.x = this.x;
+        rectangle.y = this.y;
+
     }
 
     /**

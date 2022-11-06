@@ -43,6 +43,7 @@ class TankPlayerKeyListener extends KeyAdapter {
 
     @Override
     public void keyReleased(KeyEvent event) {
+        tank.setMoving(true);
         int keyCode = event.getKeyCode();
         switch (keyCode) {
             case KeyEvent.VK_LEFT:
@@ -66,21 +67,22 @@ class TankPlayerKeyListener extends KeyAdapter {
     }
 
     private void setPlayerTankDirection() {
-
-        if (isLeftPressed) {
-            tank.setDirection(Direction.LEFT);
-        }
-        if (isRightPressed) {
-            tank.setDirection(Direction.RIGHT);
-        }
-        if (isUpPressed) {
-            tank.setDirection(Direction.UP);
-        }
-        if (isDownPressed) {
-            tank.setDirection(Direction.DOWN);
-        }
         if (!isDownPressed && !isUpPressed && !isLeftPressed && !isRightPressed) {
             tank.setMoving(false);
+        } else {
+            tank.setMoving(true);
+            if (isLeftPressed) {
+                tank.setDirection(Direction.LEFT);
+            }
+            if (isRightPressed) {
+                tank.setDirection(Direction.RIGHT);
+            }
+            if (isUpPressed) {
+                tank.setDirection(Direction.UP);
+            }
+            if (isDownPressed) {
+                tank.setDirection(Direction.DOWN);
+            }
         }
     }
 }

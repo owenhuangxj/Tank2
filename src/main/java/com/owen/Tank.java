@@ -20,11 +20,11 @@ public class Tank {
     Group group;
     Direction direction;
 
-    private TankFrame tankFrame;
+    TankFrame tankFrame;
 
-    private boolean alive = true;
+    boolean alive = true;
 
-    private boolean moving = true;
+    boolean moving = true;
 
     private Random random = new Random();
 
@@ -37,6 +37,11 @@ public class Tank {
         this.group = group;
         this.direction = direction;
         this.tankFrame = tankFrame;
+
+        rectangle.x = this.x;
+        rectangle.y = this.y;
+        rectangle.width = Bullet.WIDTH;
+        rectangle.height = Bullet.HEIGHT;
     }
 
     public void setDirection(Direction direction) {
@@ -75,6 +80,9 @@ public class Tank {
         if (!alive) {
             return;
         }
+        if (!moving) {
+            return;
+        }
         switch (direction) {
             case UP:
                 y -= SPEED;
@@ -100,6 +108,9 @@ public class Tank {
             this.fire();
         }
         checkBoundary();
+
+        rectangle.x = this.x;
+        rectangle.y = this.y;
     }
 
     /**

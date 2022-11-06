@@ -15,7 +15,7 @@ public class TankFrame extends Frame {
     static final int GAME_HEIGHT = 960;
 
     private Image screenImage;
-    private Tank playerTank = new Tank(300, 300, Direction.DOWN, Group.GOOD, this);
+    private Tank playerTank = new Tank(300, 300, Direction.UP, Group.GOOD, this);
 
     List<Tank> enemies = new ArrayList<>();
 
@@ -45,9 +45,10 @@ public class TankFrame extends Frame {
         Color color = graphics.getColor();
         graphics.setColor(Color.WHITE);
         Font font = graphics.getFont();
-        Font title = new Font("title", Font.BOLD, 25);
+        Font title = new Font("title", Font.BOLD, 15);
         graphics.setFont(title);
-        graphics.drawString("敌人坦克数量:" + enemies.size(), 10, 50);
+        graphics.drawString("炮弹数量:" + bullets.size(), 10, 50);
+        graphics.drawString("敌人坦克数量:" + enemies.size(), 10, 65);
         // 画坦克
         playerTank.paint(graphics);
         for (int index = 0; index < enemies.size(); index++) {
