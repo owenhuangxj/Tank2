@@ -2,6 +2,7 @@ package com.owen;
 
 import java.awt.*;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author OwenHuang
@@ -11,18 +12,22 @@ public class Bullet {
     public static final int WIDTH = 10;
     public static final int HEIGHT = 10;
     private static final int SPEED = 10;
+    final Group group;
     private int x, y;
     private Direction direction;
 
     private TankFrame tankFrame;
 
     boolean alive = true;
-    static Rectangle tankRectangle = new Rectangle();
-    static Rectangle bulletRectangle = new Rectangle();
+    Rectangle rectangle = new Rectangle();
 
-    public Bullet(int x, int y, Direction direction, TankFrame tankFrame) {
+    UUID playerId;
+
+    public Bullet(UUID playerId, int x, int y, Group group, Direction direction, TankFrame tankFrame) {
         this.x = x;
         this.y = y;
+        this.group = group;
+        this.playerId = playerId;
         this.direction = direction;
         this.tankFrame = tankFrame;
     }
@@ -32,15 +37,23 @@ public class Bullet {
     }
 
     public void collideWithTank(Tank tank) {
-        tankRectangle.x = tank.x;
-        tankRectangle.y = tank.y;
-        tankRectangle.width = Tank.WIDTH;
-        tankRectangle.height = Tank.HEIGHT;
-        bulletRectangle.x = this.x;
-        bulletRectangle.y = this.y;
-        bulletRectangle.width = WIDTH;
-        bulletRectangle.height = HEIGHT;
-        if (tankRectangle.intersects(bulletRectangle)) {
+        // 如果玩家并且是玩家发射的子弹不用进行碰撞处理
+        if (tank.id == this.playerId) {
+            return;
+        }
+        // 如果是同一战线发射的子弹不伤害战友
+        if (this.group == tank.group) {
+            return;
+        }
+        rectangle.x = tank.x;
+        rectangle.y = tank.y;
+        rectangle.width = Tank.WIDTH;
+        rectangle.height = Tank.HEIGHT;
+        tank.rectangle.x = this.x;
+        tank.rectangle.y = this.y;
+        tank.rectangle.width = WIDTH;
+        tank.rectangle.height = HEIGHT;
+        if (rectangle.intersects(tank.rectangle)) {
             this.die();
             tank.die();
         }
@@ -63,7 +76,7 @@ public class Bullet {
             default:
                 break;
         }
-        if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) {
+        if (x <= 0 || y <= 0 || x >= TankFrame.GAME_WIDTH || y >= TankFrame.GAME_HEIGHT) {
             alive = false;
             return;
         }

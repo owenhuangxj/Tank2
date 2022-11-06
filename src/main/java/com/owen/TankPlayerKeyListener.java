@@ -8,14 +8,14 @@ import java.awt.event.KeyEvent;
  * @author OwenHuang
  * @since 2022/11/6 12:59
  */
-class TankKeyListener extends KeyAdapter {
+class TankPlayerKeyListener extends KeyAdapter {
     private Tank tank;
     private boolean isLeftPressed;
     private boolean isRightPressed;
     private boolean isUpPressed;
     private boolean isDownPressed;
 
-    public TankKeyListener(Tank tank) {
+    public TankPlayerKeyListener(Tank tank) {
         this.tank = tank;
     }
 
@@ -38,7 +38,7 @@ class TankKeyListener extends KeyAdapter {
             default:
                 break;
         }
-        setTankDirection();
+        setPlayerTankDirection();
     }
 
     @Override
@@ -62,11 +62,11 @@ class TankKeyListener extends KeyAdapter {
             default:
                 break;
         }
-        setTankDirection();
+        setPlayerTankDirection();
     }
 
-    private void setTankDirection() {
-        tank.setMoving(true);
+    private void setPlayerTankDirection() {
+
         if (isLeftPressed) {
             tank.setDirection(Direction.LEFT);
         }

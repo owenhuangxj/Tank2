@@ -1,8 +1,6 @@
 package com.owen;
 
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -17,17 +15,11 @@ public class TankFrame extends Frame {
     static final int GAME_HEIGHT = 960;
 
     private Image screenImage;
-    private Tank tank = new Tank(300, 300, Direction.DOWN, Group.GOOD, this);
+    private Tank playerTank = new Tank(300, 300, Direction.DOWN, Group.GOOD, this);
 
     List<Tank> enemies = new ArrayList<>();
 
     List<Bullet> bullets = new ArrayList<>();
-
-
-
-    static {
-        TankFrame.class.getClassLoader().getResourceAsStream("images/badTank1.png");
-    }
 
     public TankFrame() {
         this.setSize(GAME_WIDTH, GAME_HEIGHT);
@@ -40,7 +32,7 @@ public class TankFrame extends Frame {
                 System.exit(0);
             }
         });
-        this.addKeyListener(new TankKeyListener(tank));
+        this.addKeyListener(new TankPlayerKeyListener(playerTank));
         enemies.add(new Tank(100, 100, Direction.DOWN, Group.BAD, this));
         enemies.add(new Tank(200, 100, Direction.DOWN, Group.BAD, this));
         enemies.add(new Tank(300, 100, Direction.DOWN, Group.BAD, this));
@@ -57,7 +49,7 @@ public class TankFrame extends Frame {
         graphics.setFont(title);
         graphics.drawString("敌人坦克数量:" + enemies.size(), 10, 50);
         // 画坦克
-        tank.paint(graphics);
+        playerTank.paint(graphics);
         for (int index = 0; index < enemies.size(); index++) {
             enemies.get(index).paint(graphics);
         }
@@ -70,7 +62,7 @@ public class TankFrame extends Frame {
     }
 
     /**
-     * 通过
+     * 通过更新方法中在内存里面画一张和游戏桌面大小一样的画布然后整体对游戏桌面进行刷新，消除游戏桌面的元素闪烁的问题
      * @param graphics the specified Graphics window
      */
     @Override
