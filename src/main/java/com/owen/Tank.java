@@ -11,16 +11,14 @@ import java.util.UUID;
 public class Tank {
     public static final int BOUNDARY_BUFFER = 5;
     private static final int SPEED = 2;
-    public static final int WIDTH = 50;
-    public static final int HEIGHT = 50;
+    public static final int WIDTH = ResourceMgr.goodTankDown.getWidth();
+    public static final int HEIGHT = ResourceMgr.goodTankDown.getHeight();
     int x = 0;
     int y = 0;
 
     UUID id = UUID.randomUUID();
     Group group;
     Direction direction;
-
-    TankFrame tankFrame;
 
     boolean alive = true;
 
@@ -31,12 +29,11 @@ public class Tank {
     Rectangle rectangle = new Rectangle();
 
 
-    public Tank(int x, int y, Direction direction, Group group, TankFrame tankFrame) {
+    public Tank(int x, int y, Direction direction, Group group) {
         this.x = x;
         this.y = y;
         this.group = group;
         this.direction = direction;
-        this.tankFrame = tankFrame;
 
         rectangle.x = this.x;
         rectangle.y = this.y;
@@ -54,7 +51,8 @@ public class Tank {
 
     public void paint(Graphics graphics) {
         if (!alive) {
-            tankFrame.enemies.remove(this);
+            TankFrame.getInstance().enemies.remove(this);
+            return;
         }
         Color color = graphics.getColor();
         graphics.setColor(Color.yellow);
@@ -137,13 +135,17 @@ public class Tank {
     }
 
     public void fire() {
-        int bw = this.x + WIDTH / 2 - Bullet.WIDTH;
-        int bh = this.y + HEIGHT / 2 - Bullet.HEIGHT;
+        int bx = this.x + WIDTH / 2 - Bullet.WIDTH / 2;
+        int by = this.y + HEIGHT / 2 - Bullet.HEIGHT / 2;
         // 坦克发射的时候将自己的id传给炮弹，炮弹在进行碰撞判断时用坦克的id进行排除玩家坦克不进行碰撞判断
-        this.tankFrame.bullets.add(new Bullet(this.id, bw, bh, group, this.direction, this.tankFrame));
+        TankFrame.getInstance().bullets.add(new Bullet(this.id, bx, by, group, this.direction));
     }
 
     public void die() {
         this.alive = false;
+        int ex = this.x + WIDTH / 2 - Explosion.WIDTH / 2;
+        int ey = this.y + HEIGHT / 2 - Explosion.HEIGHT / 2;
+        // 在子弹和坦克碰撞的位置添加一个爆炸对象
+        TankFrame.getInstance().explosions.add(new Explosion(ex, ey));
     }
 }

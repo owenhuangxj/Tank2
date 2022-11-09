@@ -15,13 +15,23 @@ public class TankFrame extends Frame {
     static final int GAME_HEIGHT = 960;
 
     private Image screenImage;
-    private Tank playerTank = new Tank(300, 300, Direction.UP, Group.GOOD, this);
+    private Tank playerTank = new Tank(300, 300, Direction.UP, Group.GOOD);
 
     List<Tank> enemies = new ArrayList<>();
 
     List<Bullet> bullets = new ArrayList<>();
 
-    public TankFrame() {
+    List<Explosion> explosions = new ArrayList<>();
+
+    public static final TankFrame getInstance(){
+        return InstanceHolder.INSTANCE;
+    }
+
+    static class InstanceHolder{
+        public static final TankFrame INSTANCE = new TankFrame();
+    }
+
+    private TankFrame() {
         this.setSize(GAME_WIDTH, GAME_HEIGHT);
         this.setResizable(false);
         this.setTitle("Tank War");
@@ -33,11 +43,11 @@ public class TankFrame extends Frame {
             }
         });
         this.addKeyListener(new TankPlayerKeyListener(playerTank));
-        enemies.add(new Tank(100, 100, Direction.DOWN, Group.BAD, this));
-        enemies.add(new Tank(200, 100, Direction.DOWN, Group.BAD, this));
-        enemies.add(new Tank(300, 100, Direction.DOWN, Group.BAD, this));
-        enemies.add(new Tank(400, 100, Direction.DOWN, Group.BAD, this));
-        enemies.add(new Tank(500, 100, Direction.DOWN, Group.BAD, this));
+        enemies.add(new Tank(100, 100, Direction.DOWN, Group.BAD));
+        enemies.add(new Tank(200, 100, Direction.DOWN, Group.BAD));
+        enemies.add(new Tank(300, 100, Direction.DOWN, Group.BAD));
+        enemies.add(new Tank(400, 100, Direction.DOWN, Group.BAD));
+        enemies.add(new Tank(500, 100, Direction.DOWN, Group.BAD));
     }
 
     @Override
@@ -48,7 +58,8 @@ public class TankFrame extends Frame {
         Font title = new Font("title", Font.BOLD, 15);
         graphics.setFont(title);
         graphics.drawString("炮弹数量:" + bullets.size(), 10, 50);
-        graphics.drawString("敌人坦克数量:" + enemies.size(), 10, 65);
+        graphics.drawString("炮火数量:" + explosions.size(), 10, 65);
+        graphics.drawString("敌人坦克数量:" + enemies.size(), 10, 80);
         // 画坦克
         playerTank.paint(graphics);
         for (int index = 0; index < enemies.size(); index++) {
@@ -58,12 +69,19 @@ public class TankFrame extends Frame {
         for (int index = 0; index < bullets.size(); index++) {
             bullets.get(index).paint(graphics);
         }
+
+        // 循环遍历爆炸对象集合进行爆炸画图
+        for (int index = 0; index < explosions.size(); index++) {
+            Explosion explosion = explosions.get(index);
+            explosion.paint(graphics);
+        }
         graphics.setFont(font);
         graphics.setColor(color);
     }
 
     /**
      * 通过更新方法中在内存里面画一张和游戏桌面大小一样的画布然后整体对游戏桌面进行刷新，消除游戏桌面的元素闪烁的问题
+     *
      * @param graphics the specified Graphics window
      */
     @Override

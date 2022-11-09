@@ -8,7 +8,7 @@ import java.awt.*;
  */
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        Frame frame = new TankFrame();
+        Frame frame = TankFrame.getInstance();
         while (true) {
             Thread.sleep(10);
             // repaint会调用所有元素的paint方法

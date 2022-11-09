@@ -9,27 +9,24 @@ import java.util.UUID;
  * @since 2022/11/5 20:05
  */
 public class Bullet {
-    public static final int WIDTH = 10;
-    public static final int HEIGHT = 10;
-    private static final int SPEED = 10;
+    public static final int WIDTH = ResourceMgr.bulletDown.getWidth();
+    public static final int HEIGHT = ResourceMgr.bulletDown.getHeight();
+    private static final int SPEED = 5;
     final Group group;
     private int x, y;
     private Direction direction;
-
-    private TankFrame tankFrame;
 
     boolean alive = true;
     Rectangle rectangle = new Rectangle();
 
     UUID playerId;
 
-    public Bullet(UUID playerId, int x, int y, Group group, Direction direction, TankFrame tankFrame) {
+    public Bullet(UUID playerId, int x, int y, Group group, Direction direction) {
         this.x = x;
         this.y = y;
         this.group = group;
         this.playerId = playerId;
         this.direction = direction;
-        this.tankFrame = tankFrame;
 
         rectangle.x = this.x;
         rectangle.y = this.y;
@@ -42,10 +39,6 @@ public class Bullet {
     }
 
     public void collideWithTank(Tank tank) {
-        // 如果玩家并且是玩家发射的子弹不用进行碰撞处理
-//        if (tank.id == this.playerId) {
-//            return;
-//        }
         // 如果是同一战线发射的子弹不伤害战友
         if (this.group == tank.group) {
             return;
@@ -94,7 +87,7 @@ public class Bullet {
          * 此处需要将子弹从游戏桌面移除，所以需要持有游戏桌面的引用
          */
         if (!alive) {
-            tankFrame.bullets.remove(this);
+            TankFrame.getInstance().bullets.remove(this);
         }
         Color color = graphics.getColor();
         graphics.setColor(Color.RED);
@@ -114,7 +107,7 @@ public class Bullet {
                 break;
         }
         move();
-        List<Tank> tanks = tankFrame.enemies;
+        List<Tank> tanks = TankFrame.getInstance().enemies;
         for (int idx = 0; idx < tanks.size(); idx++) {
             if (tanks.get(idx).group == Group.BAD) {
                 collideWithTank(tanks.get(idx));
