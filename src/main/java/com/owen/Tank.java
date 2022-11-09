@@ -1,6 +1,14 @@
 package com.owen;
 
+import com.owen.strategy.DefaultFireStrategy;
+import com.owen.strategy.FireStrategy;
+import com.owen.util.PropertyMgr;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Random;
 import java.util.UUID;
 
@@ -8,9 +16,11 @@ import java.util.UUID;
  * @author OwenHuang 边界缓冲
  * @since 2022/11/5 20:05
  */
+@Getter
+@Setter
 public class Tank {
     public static final int BOUNDARY_BUFFER = 5;
-    private static final int SPEED = 2;
+    public static final int SPEED = 2;
     public static final int WIDTH = ResourceMgr.goodTankDown.getWidth();
     public static final int HEIGHT = ResourceMgr.goodTankDown.getHeight();
     int x = 0;
@@ -27,6 +37,20 @@ public class Tank {
     private Random random = new Random();
 
     Rectangle rectangle = new Rectangle();
+
+    private FireStrategy fireStrategy;
+
+    {
+        try {
+            fireStrategy = (FireStrategy) Class.forName(PropertyMgr.getString("fireStrategy")).newInstance();
+        } catch (InstantiationException exception) {
+            exception.printStackTrace();
+        } catch (IllegalAccessException exception) {
+            exception.printStackTrace();
+        } catch (ClassNotFoundException exception) {
+            exception.printStackTrace();
+        }
+    }
 
 
     public Tank(int x, int y, Direction direction, Group group) {
@@ -135,10 +159,7 @@ public class Tank {
     }
 
     public void fire() {
-        int bx = this.x + WIDTH / 2 - Bullet.WIDTH / 2;
-        int by = this.y + HEIGHT / 2 - Bullet.HEIGHT / 2;
-        // 坦克发射的时候将自己的id传给炮弹，炮弹在进行碰撞判断时用坦克的id进行排除玩家坦克不进行碰撞判断
-        TankFrame.getInstance().bullets.add(new Bullet(this.id, bx, by, group, this.direction));
+        fireStrategy.fire(this);
     }
 
     public void die() {

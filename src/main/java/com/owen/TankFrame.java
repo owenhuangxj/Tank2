@@ -1,5 +1,8 @@
 package com.owen;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -10,6 +13,9 @@ import java.util.List;
  * @author OwenHuang
  * @since 2022/11/5 20:05
  */
+
+@Getter
+@Setter
 public class TankFrame extends Frame {
     static final int GAME_WIDTH = 1080;
     static final int GAME_HEIGHT = 960;

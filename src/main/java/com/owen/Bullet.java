@@ -1,5 +1,8 @@
 package com.owen;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.awt.*;
 import java.util.List;
 import java.util.UUID;
@@ -8,6 +11,8 @@ import java.util.UUID;
  * @author OwenHuang
  * @since 2022/11/5 20:05
  */
+@Getter
+@Setter
 public class Bullet {
     public static final int WIDTH = ResourceMgr.bulletDown.getWidth();
     public static final int HEIGHT = ResourceMgr.bulletDown.getHeight();
